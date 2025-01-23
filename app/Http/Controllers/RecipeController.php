@@ -16,6 +16,7 @@ class RecipeController extends Controller
             'name' =>'required',
             'ingredients' =>'required',
             'steps' =>'required',
+            'description' =>'required',
             'image' => 'required|mimes:jpeg,jpg,png|max:2048',
         ]);
 
@@ -53,7 +54,7 @@ class RecipeController extends Controller
     public function destroy(Recipe $recipe)
     {
         $recipe->delete();
-        return redirect()->route('dashboard')->with('success_delete', 'Recipe deleted successfully');
+        return redirect()->route('recipe')->with('success_delete', 'Recipe deleted successfully');
     }
 
     public function edit(Recipe $recipe)
@@ -63,23 +64,40 @@ class RecipeController extends Controller
 
     public function update(Request $request, string $id)
     {
-
         $recipe = Recipe::find($id);
+
+        if (!$recipe) {
+            return redirect()->route('recipe')->with('error', 'Recipe not found.');
+        }
 
         $validated = $request->validate([
             'name' => 'required',
             'ingredients' => 'required',
             'steps' => 'required',
+            'description' => 'required',
             'image' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
-       if($recipe->save($validated)) {
-        return redirect()->route('dashboard')->with('success', 'Recipe updated successfully.');
-       }
+        // Update the model's attributes
+        $recipe->name = $validated['name'];
+        $recipe->ingredients = $validated['ingredients'];
+        $recipe->steps = $validated['steps'];
+        $recipe->description = $validated['description'];
 
-       dd('something went wrong');
+        // Handle image if it exists
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('recipes', 'public');
+            $recipe->image = $imagePath;
+        }
 
+        // Save the updated model
+        if ($recipe->save()) {
+            return redirect()->route('recipe')->with('success', 'Recipe updated successfully.');
+        }
+
+        return redirect()->route('recipe')->with('error', 'Failed to update recipe.');
     }
+
 
 }
 

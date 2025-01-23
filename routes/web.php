@@ -5,14 +5,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('welcome', function () {
+    $recipes = Recipe::all();
+    return view('welcome',compact('recipes')) ;
+})->middleware(['auth', 'verified'])->name('welcome');
 
 Route::get('/dashboard', function () {
     $recipes = Recipe::all();
     return view('dashboard',compact('recipes')) ;
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/recipe', function () {
+    $recipes = Recipe::all();
+    return view('recipe',compact('recipes')) ;
+})->middleware(['auth', 'verified'])->name('recipe');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

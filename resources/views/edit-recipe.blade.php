@@ -34,6 +34,11 @@
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                     </div>
 
+                    <div>
+                        <label for="steps" class="block text-gray-700">Description</label>
+                        <input type="text" id="description" name="description" value="{{ old('steps', $recipe->description) }}"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                    </div>
 
                     <div>
                         <label for="image" class="block text-gray-700">Image</label>

@@ -55,6 +55,11 @@
                             </div>
 
                             <div>
+                                <label for="description" class="block text-gray-700">Description</label>
+                                <input type="text" id="description" name="description" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                            </div>
+
+                            <div>
                                 <label for="image" class="block text-gray-700">Image</label>
                                 <input type="file" id="image" name="image" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
                             </div>
@@ -67,45 +72,6 @@
                         </div>
                     </form>
                 </div>
-
-                <!-- Recipe List Table -->
-                <div class="mt-8">
-                    <h3 class="text-lg font-medium mb-4">Recipe List</h3>
-                    <table class="min-w-full bg-white border">
-                        <thead>
-                            <tr>
-                                <th class="py-2 border-b">#</th>
-                                <th class="py-2 border-b">Name</th>
-                                <th class="py-2 border-b">Ingredients</th>
-                                <th class="py-2 border-b">Steps</th>
-                                <th class="py-2 border-b">Image</th>
-                                <th class="py-2 border-b">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($recipes as $key => $recipe)
-                                <tr>
-                                    <td class="py-2 border-b px-4">{{ $key + 1 }}</td>
-                                    <td class="py-2 border-b px-4">{{ $recipe->name }}</td>
-                                    <td class="py-2 border-b px-4">{{ $recipe->ingredients }}</td>
-                                    <td class="py-2 border-b px-4">{{ $recipe->steps }}</td>
-                                    <td class="py-2 border-b px-4">
-                                        <img src="{{ asset('storage/public/img/recipe/' . $recipe->image) }}" alt="{{ $recipe->name }}" class="h-5px w-5px">
-                                    </td>
-                                    <td class="py-2 border-b px-4">
-                                        <a href="{{ route('recipe.edit', $recipe->id) }}" class="text-blue-500 hover:text-blue-700">Edit</a>
-                                        <form method="POST" action="{{ route('recipe.destroy', $recipe->id) }}" style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
         </div>
     </div>
